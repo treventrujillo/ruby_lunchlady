@@ -14,14 +14,20 @@ SIDE_DISHES = [
 
 @user_items = []
 
-def total
-  sum = 0.0
-  @user_items.each do |item|
-    sum += item[:price]
+def exit_program(choice)
+  if choice.downcase == 'quit'
+    puts "Come again!"
+    exit
   end
-  puts "Your total is: $#{sum.round(2)}".colorize(:green)
 end
 
+def print_main_dishes
+  puts "Main Dish Options:"
+  MAIN_DISHES.each_with_index do |dish, index|
+    index = index + 1
+    puts "#{index}. #{dish[:name]} $#{dish[:price]}"
+  end
+end
 
 def tray
   @user_items.each_with_index do |dish, index|
@@ -30,53 +36,59 @@ def tray
   end
 end
 
-def side_dish
+def print_side_dishes
+  puts "Side Dish Options:"
   SIDE_DISHES.each_with_index do |dish, index|
     index = index + 1
     puts "#{index}. #{dish[:name]} $#{dish[:price]}"
   end
-input = gets.strip
-  case input
-  when '1'
-    @user_items << (SIDE_DISHES[0])
-  when '2'
-    @user_items << (SIDE_DISHES[1])
-  when '3'
-    @user_items << (SIDE_DISHES[2])
-  else
-    raise "Invalid Selection, Try Again!"
-  end
 end
 
-def main_dish
-  MAIN_DISHES.each_with_index do |dish, index|
-    index = index + 1
-    puts "#{index}. #{dish[:name]} $#{dish[:price]}"
+def total(user_items)
+  user_items
+  sum = 0.0
+  user_items.each do |user_items|
+    sum += user_items[:price]
   end
-input = gets.strip
-  case input
-  when '1'
-    @user_items << (MAIN_DISHES[0])
-  when '2'
-    @user_items << (MAIN_DISHES[1])
-  when '3'
-    @user_items << (MAIN_DISHES[2])
-  else
-    raise "Invalid Selection, Try Again!"
-  end
+  puts "Your total is: $#{sum.round(2)}".colorize(:green)
+end
+
+def side_dish(choice)
+  dish = SIDE_DISHES[choice]
+  @user_items << dish
+  user_items = @user_items
+  total(user_items)
+end
+
+def main_dish(choice)
+  dish = MAIN_DISHES[choice]
+  @user_items << dish
+  user_items = @user_items
+  total(user_items)
 end
 
 def menu
-  puts "Welcome to the Cafeteria,"
-  puts "Come get your slop!"
-  main_dish
-  puts "Get some slime with that!"
-  side_dish
-  puts "Get some more."
-  side_dish
-  puts "Here's your tray: "
-  tray
-  total
+  user_items = @user_items
+    puts "Welcome to the Cafeteria,"
+    puts "Choose your main entree!"
+    puts "Type QUIT to exit program"
+    print_main_dishes
+    choice1 = gets.strip
+    exit_program(choice1)
+    main_dish(choice1.to_i - 1)
+    puts "First side dish?"
+    print_side_dishes
+    choice2 = gets.strip
+    side_dish(choice2.to_i - 1)
+    puts "Second side dish?"
+    print_side_dishes
+    choice3 = gets.strip
+    side_dish(choice3.to_i - 1)
+    puts "Here's your tray:"
+    tray
+    total(user_items)
 end
 
-menu
+while true do
+  menu
+end
