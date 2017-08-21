@@ -14,6 +14,15 @@ SIDE_DISHES = [
 
 @user_items = []
 
+def input_check(choice)
+  if choice <= MAIN_DISHES.length
+  else
+    puts "Invalid Choice, Try Again!"
+    @user_items.delete(0..4)
+    menu
+  end
+end
+
 def exit_program(choice)
   if choice.downcase == 'quit'
     puts "Come again!"
@@ -74,15 +83,18 @@ def menu
     puts "Type QUIT to exit program"
     print_main_dishes
     choice1 = gets.strip
+    input_check(choice1.to_i)
     exit_program(choice1)
     main_dish(choice1.to_i - 1)
     puts "First side dish?"
     print_side_dishes
     choice2 = gets.strip
+    input_check(choice2.to_i)
     side_dish(choice2.to_i - 1)
     puts "Second side dish?"
     print_side_dishes
     choice3 = gets.strip
+    input_check(choice3.to_i)
     side_dish(choice3.to_i - 1)
     puts "Here's your tray:"
     tray
